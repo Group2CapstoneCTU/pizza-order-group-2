@@ -1,66 +1,151 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Pizza Ordering Project
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## **Setting Up the Project on Your System**
 
-## About Laravel
+### **1. Install Prerequisites**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Before setting up the project, ensure you have the following installed:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **[VS Code](https://code.visualstudio.com/):** A popular code editor.
+- **[Laravel Herd](https://laravelherd.com/):** A local development environment for Laravel applications.
+- **[SQLiteStudio](https://sqlitestudio.pl/):** A database manager for SQLite databases.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### **2. Clone the Repository**
 
-## Learning Laravel
+1. **Clone the GitHub Repository:**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+   Open your terminal or command prompt and run:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+   ```bash
+   git clone https://github.com/Group2CapstoneCTU/pizza-order-group-2.git
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. **Navigate to the Project Directory:**
 
-## Laravel Sponsors
+   ```bash
+   cd pizza-order-group-2
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### **3. Install Dependencies**
 
-### Premium Partners
+1. **Install Composer Dependencies:**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+   Ensure Composer is installed on your system. Run:
 
-## Contributing
+   ```bash
+   composer install
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. **Install Node.js Dependencies:**
 
-## Code of Conduct
+   Ensure Node.js and npm are installed. Run:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   ```bash
+   npm install
+   ```
 
-## Security Vulnerabilities
+### **4. Configure Environment File**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. **Copy the `.env.example` File:**
 
-## License
+   Create a new `.env` file from the example:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Update the `.env` File:**
+
+   Open the `.env` file in a text editor (you can use VS Code for this) and update the database path. Change the `DB_DATABASE` entry to reflect the path where you want to store the SQLite database on your local system.
+
+   Example with a local path:
+
+   ```env
+   DB_CONNECTION=sqlite
+   DB_DATABASE="C:/Users/YourUsername/Desktop/ProjectFolder/database/pizzadatabase.sqlite"
+   ```
+
+   **Note:** Replace `C:/Users/YourUsername/Desktop/ProjectFolder/database/pizzadatabase.sqlite` with the actual path on your system where you want to store the SQLite database file. Use forward slashes (`/`) to avoid escape sequence issues.
+
+### **5. Install and Configure SQLiteStudio**
+
+1. **Download and Install SQLiteStudio:**
+
+   Go to the [SQLiteStudio website](https://sqlitestudio.pl/) and download the installer for your operating system. Follow the installation instructions.
+
+2. **Open SQLiteStudio:**
+
+   Launch SQLiteStudio from your applications list.
+
+3. **Open the SQLite Database:**
+
+   - Go to `Database` -> `Add a database`.
+   - Browse to the path specified in your `.env` file (`C:/Users/YourUsername/Desktop/ProjectFolder/database/pizzadatabase.sqlite`) and select the database file.
+
+4. **Verify Database Structure:**
+
+   Use SQLiteStudio to check if the database contains the necessary tables and data.
+
+### **6. Install Laravel Herd**
+
+1. **Download and Install Laravel Herd:**
+
+   Follow the installation instructions on the [Laravel Herd website](https://laravelherd.com/). This tool will help you set up a local environment specifically optimized for Laravel applications.
+
+2. **Configure Laravel Herd:**
+
+   Once installed, use Laravel Herd to set up and manage your local development environment.
+
+### **7. Generate Application Key**
+
+Generate the application key:
+
+```bash
+php artisan key:generate
+```
+
+### **8. Run Migrations**
+
+Apply the database migrations to set up the schema:
+
+```bash
+php artisan migrate
+```
+
+### **9. Run the Development Server**
+
+Start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+You can now access the application at `http://localhost:8000` in your web browser.
+
+### **10. Verify the Setup**
+
+- **Check Database:** Use SQLiteStudio to verify that the database was created and contains the necessary tables.
+- **Test Application:** Ensure that the application is functioning correctly and that all features are working as expected.
+
+### **Troubleshooting**
+
+- **File Path Issues:** Ensure the path to the SQLite database in the `.env` file is correct and accessible. Adjust the path if you encounter issues.
+- **Permissions Issues:** Verify that Laravel has read and write permissions for the SQLite database file.
+- **VS Code Issues:** If you encounter any issues with VS Code, ensure it is installed correctly and configured to handle PHP and Laravel projects.
+- **Laravel Herd Issues:** If Laravel Herd is not working as expected, consult the [Laravel Herd documentation](https://laravelherd.com/docs) for troubleshooting steps.
+- **SQLiteStudio Issues:** If you encounter issues with SQLiteStudio, ensure it is installed correctly and can access the database file.
+
+### **Summary**
+
+1. **Install VS Code, Laravel Herd, and SQLiteStudio** before setting up the project.
+2. **Clone the repository** and navigate to the project directory.
+3. **Install dependencies** using Composer and npm.
+4. **Configure the `.env` file** with the correct database path.
+5. **Install and configure SQLiteStudio**.
+6. **Install and configure Laravel Herd**.
+7. **Generate the application key** with `php artisan key:generate`.
+8. **Run migrations** with `php artisan migrate`.
+9. **Start the development server** with `php artisan serve`.
+10. **Verify the setup** and troubleshoot any issues.
+
+---
