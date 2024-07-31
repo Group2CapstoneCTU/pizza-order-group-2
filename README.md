@@ -1,4 +1,3 @@
----
 
 ## **Setting Up the Project on Your System**
 
@@ -165,5 +164,5 @@ You can now access the application at `http://localhost:8000` in your web browse
 9. **Start the development server** with `php artisan serve`.
 10. **Verify the setup** and troubleshoot any issues.
 
----
+
 
