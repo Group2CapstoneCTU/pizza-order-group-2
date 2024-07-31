@@ -1,4 +1,3 @@
-Pizza Ordering Project
 
 ## **Setting Up the Project on Your System**
 
@@ -9,8 +8,25 @@ Before setting up the project, ensure you have the following installed:
 - **[VS Code](https://code.visualstudio.com/):** A popular code editor.
 - **[Laravel Herd](https://laravelherd.com/):** A local development environment for Laravel applications.
 - **[SQLiteStudio](https://sqlitestudio.pl/):** A database manager for SQLite databases.
+- **[Composer](https://getcomposer.org/):** A dependency manager for PHP.
 
-### **2. Clone the Repository**
+### **2. Install Composer**
+
+1. **Download and Install Composer:**
+
+   Go to the [Composer website](https://getcomposer.org/download/) and follow the installation instructions for your operating system.
+
+2. **Verify Composer Installation:**
+
+   After installation, open your terminal or command prompt and run:
+
+   ```bash
+   composer --version
+   ```
+
+   This should display the installed version of Composer, confirming that it is installed correctly.
+
+### **3. Clone the Repository**
 
 1. **Clone the GitHub Repository:**
 
@@ -26,11 +42,11 @@ Before setting up the project, ensure you have the following installed:
    cd pizza-order-group-2
    ```
 
-### **3. Install Dependencies**
+### **4. Install Dependencies**
 
 1. **Install Composer Dependencies:**
 
-   Ensure Composer is installed on your system. Run:
+   Run:
 
    ```bash
    composer install
@@ -44,7 +60,7 @@ Before setting up the project, ensure you have the following installed:
    npm install
    ```
 
-### **4. Configure Environment File**
+### **5. Configure Environment File**
 
 1. **Copy the `.env.example` File:**
 
@@ -67,7 +83,7 @@ Before setting up the project, ensure you have the following installed:
 
    **Note:** Replace `C:/Users/YourUsername/Desktop/ProjectFolder/database/pizzadatabase.sqlite` with the actual path on your system where you want to store the SQLite database file. Use forward slashes (`/`) to avoid escape sequence issues.
 
-### **5. Install and Configure SQLiteStudio**
+### **6. Install and Configure SQLiteStudio**
 
 1. **Download and Install SQLiteStudio:**
 
@@ -86,7 +102,7 @@ Before setting up the project, ensure you have the following installed:
 
    Use SQLiteStudio to check if the database contains the necessary tables and data.
 
-### **6. Install Laravel Herd**
+### **7. Install Laravel Herd**
 
 1. **Download and Install Laravel Herd:**
 
@@ -96,7 +112,7 @@ Before setting up the project, ensure you have the following installed:
 
    Once installed, use Laravel Herd to set up and manage your local development environment.
 
-### **7. Generate Application Key**
+### **8. Generate Application Key**
 
 Generate the application key:
 
@@ -104,7 +120,7 @@ Generate the application key:
 php artisan key:generate
 ```
 
-### **8. Run Migrations**
+### **9. Run Migrations**
 
 Apply the database migrations to set up the schema:
 
@@ -112,7 +128,7 @@ Apply the database migrations to set up the schema:
 php artisan migrate
 ```
 
-### **9. Run the Development Server**
+### **10. Run the Development Server**
 
 Start the Laravel development server:
 
@@ -122,7 +138,7 @@ php artisan serve
 
 You can now access the application at `http://localhost:8000` in your web browser.
 
-### **10. Verify the Setup**
+### **11. Verify the Setup**
 
 - **Check Database:** Use SQLiteStudio to verify that the database was created and contains the necessary tables.
 - **Test Application:** Ensure that the application is functioning correctly and that all features are working as expected.
@@ -137,7 +153,7 @@ You can now access the application at `http://localhost:8000` in your web browse
 
 ### **Summary**
 
-1. **Install VS Code, Laravel Herd, and SQLiteStudio** before setting up the project.
+1. **Install VS Code, Composer, Laravel Herd, and SQLiteStudio** before setting up the project.
 2. **Clone the repository** and navigate to the project directory.
 3. **Install dependencies** using Composer and npm.
 4. **Configure the `.env` file** with the correct database path.
@@ -148,4 +164,5 @@ You can now access the application at `http://localhost:8000` in your web browse
 9. **Start the development server** with `php artisan serve`.
 10. **Verify the setup** and troubleshoot any issues.
 
----
+
+
