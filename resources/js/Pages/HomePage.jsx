@@ -2,7 +2,7 @@
 import React from 'react';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer'; // Adjust the path as necessary
-
+import '/resources/css/HomePage.css'
 
 
 const HomePage = () => {
