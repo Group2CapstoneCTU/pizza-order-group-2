@@ -112,7 +112,7 @@ Before setting up the project, ensure you have the following installed:
   ```
 
 - You can now access the application at `http://localhost:8000` in your web browser.
-- NOTE: If VSCode will not work to start the server, you can do this in Herd.
+- NOTE: If VSCode will not work to start the server, you can do this in Herd. The address should be http://pizza-order-group-2.test.
 
 #### **12. Verify the Setup**
 - **Check Database:** Use SQLiteStudio to verify that the database was created and contains the necessary tables.
