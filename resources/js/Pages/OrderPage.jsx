@@ -2,37 +2,41 @@ import React, { useState, useEffect } from 'react';
 import { router } from '@inertiajs/react';
 import '/resources/css/modal.css'; // Adjust the path based on your project structure
 
-const OrderPage = ({ message }) => {
-    const [showModal, setShowModal] = useState(false);
+const OrderPage = () => {
+    const [cart, setCart] = useState([]);
+    const [address, setAddress] = useState('');
 
-    useEffect(() => {
-        if (message) {
-            setShowModal(true);
-        }
-    }, [message]);
-
-    const handleSubmit = (event) => {
+    const addToCart = (event) => {
         event.preventDefault();
-        
         const formData = new FormData(event.target);
-        router.post('/order', formData);
+        const pizzaId = formData.get('pizza_id');
+        const quantity = parseInt(formData.get('quantity'));
+
+        const newItem = { pizza: pizzaId, quantity: quantity };
+        setCart([...cart, newItem]);
     };
 
-    const closeModal = () => {
-        setShowModal(false);
+    const placeOrder = () => {
+        router.post('/order', { cart, address }, {
+            onSuccess: () => {
+                Inertia.visit('/order/review');
+            },
+            onError: (errors) => {
+                console.error(errors);
+            }
+        });
     };
 
     return (
         <div>
             <h2>Order Your Pizza</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={addToCart}>
                 <div>
                     <label htmlFor="pizza">Choose your pizza:</label>
                     <select id="pizza_id" name="pizza_id">
                         <option value="1">Margherita</option>
                         <option value="2">Pepperoni</option>
-                        <option value="3">Veggie</option>
-                        {/* Add more options as needed */}
+                        <option value="3">BBQ Chicken</option>
                     </select>
                 </div>
                 <div>
@@ -41,21 +45,28 @@ const OrderPage = ({ message }) => {
                 </div>
                 <div>
                     <label htmlFor="address">Delivery Address:</label>
-                    <input type="text" id="address" name="delivery_address" />
+                    <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
                 </div>
-                <button type="submit">Place Order</button>
+                <button type="submit">Add to Cart</button>
             </form>
 
-            {showModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <span className="close-button" onClick={closeModal}>&times;</span>
-                        <h2>Order Confirmation</h2>
-                        <p>{message}</p>
-                        <button onClick={closeModal}>Close</button>
-                    </div>
-                </div>
-            )}
+            <div>
+                <h3>Cart</h3>
+                <ul>
+                    {cart.map((item, index) => (
+                        <li key={index}>
+                            Pizza ID: {item.pizza}, Quantity: {item.quantity}
+                        </li>
+                    ))}
+                </ul>
+                <button onClick={placeOrder}>Place Order</button>
+            </div>
         </div>
     );
 };

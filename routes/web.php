@@ -27,12 +27,21 @@ Route::get('/order', function () {
     return Inertia::render('OrderPage');
 });
 Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+Route::get('/order/review', function () {
+    // You might want to pass the cart and address from session or state
+    return Inertia::render('OrderReview', [
+        'initialCart' => session('cart', []),
+        'initialAddress' => session('address', ''),
+    ]);
+})->name('order.review');
 
-// Remove or comment out the Order confirmation route
-// Route::get('/order/confirm', function () {
-//     return Inertia::render('OrderConfirm', [
-//         'message' => session('message')
-//     ]);
-// })->name('order.confirm');
+
+Route::post('/order/confirm', [OrderController::class, 'confirm']);
+
+Route::get('/order/confirmed', function () {
+    return Inertia::render('OrderConfirm', [
+        'message' => session('message', 'Your order has been placed successfully!'),
+    ]);
+})->name('order.confirmed');
 
 require __DIR__.'/auth.php';

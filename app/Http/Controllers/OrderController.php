@@ -10,19 +10,30 @@ class OrderController extends Controller
 {
     public function store(Request $request)
     {
-        // Validate the incoming request data
-        $validated = $request->validate([
-            'pizza_id' => 'required|exists:pizzas,id',
-            'quantity' => 'required|integer|min:1',
-            'delivery_address' => 'required|string|max:255',
-        ]);
+        $cart = $request->input('cart');
+        $address = $request->input('address');
 
-        // Create a new order using the validated data
-        $order = Order::create($validated);
+        // Store cart and address in the session for review page
+        session(['cart' => $cart, 'address' => $address]);
 
-        // Return an Inertia response with the success message
-        return Inertia::render('OrderPage', [
-            'message' => 'Order placed successfully!',
-        ]);
+        return redirect()->route('order.review');
+    }
+
+    public function confirm(Request $request)
+    {
+        $cart = $request->input('cart');
+        $address = $request->input('address');
+
+        // Save each item in the cart to the orders table
+        foreach ($cart as $item) {
+            Order::create([
+                'pizza_id' => $item['pizza'],
+                'quantity' => $item['quantity'],
+                'delivery_address' => $address,
+            ]);
+        }
+
+        session()->flash('message', 'Order placed successfully!');
+        return redirect()->route('order.confirmed');
     }
 }
