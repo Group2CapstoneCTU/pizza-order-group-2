@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { router } from '@inertiajs/react';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
-import CheckoutForm from '../Components/CheckoutForm';
+import { Elements, useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 
 const OrderReview = ({ initialCart, initialAddress }) => {
     const [cart, setCart] = useState(initialCart);
@@ -39,15 +38,20 @@ const OrderReview = ({ initialCart, initialAddress }) => {
     const tax = calculateTax(subtotal);
     const total = calculateTotal(subtotal, tax);
 
-    const confirmOrder = () => {
-        router.post('/order/confirm', { cart, address }, {
-            onSuccess: () => {
-                router.visit('/order/confirmed');
-            },
-            onError: (errors) => {
-                console.error(errors);
-            }
-        });
+    const confirmOrder = async (paymentMethodId) => {
+        try {
+            // Process order and payment
+            await router.post('/order/confirm', { cart, address, paymentMethodId }, {
+                onSuccess: () => {
+                    router.visit('/order/confirmed');
+                },
+                onError: (errors) => {
+                    console.error(errors);
+                }
+            });
+        } catch (error) {
+            console.error("Error confirming order:", error);
+        }
     };
 
     const stripePromise = loadStripe('pk_test_51Pmf8kRpUe0LHuzU3J3Y0AGwCAuhw3ivc0S7SrdDZxvBKcSOBrVQDVpo9U0agvgW58GBLIAleDRMjBGB5XEfDK3n00XpP80kR9');
@@ -84,10 +88,45 @@ const OrderReview = ({ initialCart, initialAddress }) => {
                     onChange={(e) => setAddress(e.target.value)}
                 />
             </div>
+
             <Elements stripe={stripePromise}>
-            <CheckoutForm />
-            </Elements>            
+                <CheckoutForm confirmOrder={confirmOrder} />
+            </Elements>
         </div>
+    );
+};
+
+const CheckoutForm = ({ confirmOrder }) => {
+    const stripe = useStripe();
+    const elements = useElements();
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        if (!stripe || !elements) {
+            return;
+        }
+
+        const cardElement = elements.getElement(CardElement);
+
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
+            type: 'card',
+            card: cardElement,
+        });
+
+        if (error) {
+            console.error(error);
+        } else {
+            // Directly confirm the order after successful payment method creation
+            confirmOrder(paymentMethod.id);
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <CardElement />  
+            <button type="submit" disabled={!stripe}>Pay</button>                 
+        </form>
     );
 };
 

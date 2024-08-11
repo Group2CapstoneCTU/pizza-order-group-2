@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Order;
@@ -45,63 +46,54 @@ class OrderController extends Controller
     }
 
     public function processPayment(Request $request)
-{
-    \Stripe\Stripe::setApiKey('pk_test_51Pmf8kRpUe0LHuzU3J3Y0AGwCAuhw3ivc0S7SrdDZxvBKcSOBrVQDVpo9U0agvgW58GBLIAleDRMjBGB5XEfDK3n00XpP80kR9');
+    {
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        try {
+            $paymentMethodId = $request->input('paymentMethodId');
+            $amount = 1000; // Replace with the actual amount
+            $currency = 'usd';
 
-    try {
-        $paymentMethodId = $request->input('paymentMethodId');
-        $amount = 1000; // Replace with actual amount
-        $currency = 'usd';
-
-        $paymentIntent = \Stripe\PaymentIntent::create([
-            'amount' => $amount,
-            'currency' => $currency,
-            'payment_method' => $paymentMethodId,
-            'confirmation_method' => 'manual',
-            'confirm' => true,
-        ]);
-
-        if ($paymentIntent->status === 'requires_action' && $paymentIntent->next_action->type === 'use_stripe_sdk') {
-            return response()->json([
-                'requiresAction' => true,
-                'paymentIntentId' => $paymentIntent->id,
-                'clientSecret' => $paymentIntent->client_secret,
+            $paymentIntent = \Stripe\PaymentIntent::create([
+                'amount' => $amount,
+                'currency' => $currency,
+                'payment_method' => $paymentMethodId,
+                'confirmation_method' => 'manual',
+                'confirm' => true,
             ]);
-        } else {
-            return response()->json(['success' => true]);
+
+            // Additional code to handle the payment confirmation
+        } catch (\Exception $e) {
+            // Handle payment exception
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
     }
-}
 
     public function confirm(Request $request)
     {
         $cart = $request->input('cart');
         $address = $request->input('address');
-    
+        
         $orders = [];
         $taxRate = 0.08;
-    
+        
         foreach ($cart as $item) {
             $pizza = Pizza::find($item['pizzaId']);
             $subtotal = $pizza->price * $item['quantity'];
             $tax = $subtotal * $taxRate;
             $total = $subtotal + $tax;
-    
+        
             $orders[] = [
                 'pizza_id' => $item['pizzaId'],
                 'quantity' => $item['quantity'],
                 'delivery_address' => $address,
                 'price' => $subtotal,
-                'total' => $total, // Store the total including tax
+                'total' => $total,                
             ];
         }
-    
+        
         Order::insert($orders);
     
         session()->flash('message', 'Order placed successfully!');
         return redirect()->route('order.confirmed');
     }
 }
-

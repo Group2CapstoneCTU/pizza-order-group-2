@@ -44,5 +44,4 @@ Route::get('/order/confirmed', function () {
     ]);
 })->name('order.confirmed');
 
-
 require __DIR__.'/auth.php';
