@@ -46,7 +46,7 @@ class OrderController extends Controller
 
     public function processPayment(Request $request)
 {
-    \Stripe\Stripe::setApiKey('your-secret-key-here');
+    \Stripe\Stripe::setApiKey('pk_test_51Pmf8kRpUe0LHuzU3J3Y0AGwCAuhw3ivc0S7SrdDZxvBKcSOBrVQDVpo9U0agvgW58GBLIAleDRMjBGB5XEfDK3n00XpP80kR9');
 
     try {
         $paymentMethodId = $request->input('paymentMethodId');

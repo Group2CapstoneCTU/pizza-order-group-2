@@ -50,7 +50,7 @@ const OrderReview = ({ initialCart, initialAddress }) => {
         });
     };
 
-    const stripePromise = loadStripe('your-publishable-key-here');
+    const stripePromise = loadStripe('pk_test_51Pmf8kRpUe0LHuzU3J3Y0AGwCAuhw3ivc0S7SrdDZxvBKcSOBrVQDVpo9U0agvgW58GBLIAleDRMjBGB5XEfDK3n00XpP80kR9');
 
     return (
         <div>
@@ -86,8 +86,7 @@ const OrderReview = ({ initialCart, initialAddress }) => {
             </div>
             <Elements stripe={stripePromise}>
             <CheckoutForm />
-            </Elements>
-            <button onClick={confirmOrder}>Pay & Confirm</button>
+            </Elements>            
         </div>
     );
 };
