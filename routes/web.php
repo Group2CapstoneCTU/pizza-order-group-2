@@ -35,13 +35,14 @@ Route::get('/order/review', function () {
     ]);
 })->name('order.review');
 
-
+Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
+Route::get('/order/review', [OrderController::class, 'review'])->name('order.review');
 Route::post('/order/confirm', [OrderController::class, 'confirm']);
-
 Route::get('/order/confirmed', function () {
     return Inertia::render('OrderConfirm', [
         'message' => session('message', 'Your order has been placed successfully!'),
     ]);
 })->name('order.confirmed');
+
 
 require __DIR__.'/auth.php';

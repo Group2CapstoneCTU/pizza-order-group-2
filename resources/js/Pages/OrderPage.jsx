@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { router } from '@inertiajs/react';
+import Navbar from '../Components/Navbar';
+import Footer from '../Components/Footer';
 import '/resources/css/modal.css'; // Adjust the path based on your project structure
 
 const OrderPage = () => {
@@ -21,12 +23,11 @@ const OrderPage = () => {
         const updatedCart = cart.filter((_, i) => i !== index);
         setCart(updatedCart);
     };
-    
-    
+
     const placeOrder = () => {
         router.post('/order', { cart, address }, {
             onSuccess: () => {
-                Inertia.visit('/order/review');
+                router.visit('/order/review');
             },
             onError: (errors) => {
                 console.error(errors);
@@ -37,6 +38,8 @@ const OrderPage = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+                {/* Navigation Bar */}
+                <Navbar />
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Order Your Pizza</h2>
                 <form onSubmit={addToCart}>
                     <div className="mb-4">
@@ -84,7 +87,7 @@ const OrderPage = () => {
                     <ul className="mb-4">
                         {cart.map((item, index) => (
                             <li key={index} className="flex justify-between items-center bg-gray-100 p-2 rounded-md mb-2">
-                                <span>Pizza: {item.pizzaName}, Quantity: {item.quantity}</span>
+                                <span>Pizza: {item.pizzaName}, Quantity: {item.quantity}, Price: {item.price}</span>
                                 <button
                                     onClick={() => removeFromCart(index)}
                                     className="ml-4 bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"

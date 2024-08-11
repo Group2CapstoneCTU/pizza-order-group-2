@@ -19,4 +19,6 @@
            $pizza = Pizza::find($id);
            return Inertia::render('PizzaDetailPage', ['pizza' => $pizza]);
        }
+
+       
    }

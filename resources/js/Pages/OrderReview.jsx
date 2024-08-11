@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { router } from '@inertiajs/react';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import CheckoutForm from '../Components/CheckoutForm';
 
 const OrderReview = ({ initialCart, initialAddress }) => {
     const [cart, setCart] = useState(initialCart);
@@ -20,13 +23,21 @@ const OrderReview = ({ initialCart, initialAddress }) => {
         setCart(updatedCart);
     };
 
-
-    const calculateTotal = (cart, taxRate = 0.08, discount = 0) => {
-        const subtotal = cart.reduce((acc, item) => acc + item.quantity * item.price, 0);
-        const tax = subtotal * taxRate;
-        const total = subtotal + tax - discount;
-        return total.toFixed(2);
+    const calculateSubtotal = (cart) => {
+        return cart.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2);
     };
+
+    const calculateTax = (subtotal, taxRate = 0.08) => {
+        return (subtotal * taxRate).toFixed(2);
+    };
+
+    const calculateTotal = (subtotal, tax, discount = 0) => {
+        return (parseFloat(subtotal) + parseFloat(tax) - discount).toFixed(2);
+    };
+
+    const subtotal = calculateSubtotal(cart);
+    const tax = calculateTax(subtotal);
+    const total = calculateTotal(subtotal, tax);
 
     const confirmOrder = () => {
         router.post('/order/confirm', { cart, address }, {
@@ -38,6 +49,8 @@ const OrderReview = ({ initialCart, initialAddress }) => {
             }
         });
     };
+
+    const stripePromise = loadStripe('your-publishable-key-here');
 
     return (
         <div>
@@ -58,9 +71,9 @@ const OrderReview = ({ initialCart, initialAddress }) => {
                 ))}
             </ul>
 
-        <h3>Subtotal: ${calculateTotal(cart)}</h3>
-        <h3>Tax: ${(calculateTotal(cart) * 0.08).toFixed(2)}</h3>
-        <h3>Total: ${calculateTotal(cart)}</h3>
+            <h3>Subtotal: ${subtotal}</h3>
+            <h3>Tax: ${tax}</h3>
+            <h3>Total: ${total}</h3>
             <div>
                 <label htmlFor="address">Delivery Address:</label>
                 <input
@@ -71,7 +84,10 @@ const OrderReview = ({ initialCart, initialAddress }) => {
                     onChange={(e) => setAddress(e.target.value)}
                 />
             </div>
-            <button onClick={confirmOrder}>Confirm Order</button>
+            <Elements stripe={stripePromise}>
+            <CheckoutForm />
+            </Elements>
+            <button onClick={confirmOrder}>Pay & Confirm</button>
         </div>
     );
 };
