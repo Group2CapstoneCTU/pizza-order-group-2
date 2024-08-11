@@ -27,7 +27,7 @@ class OrderController extends Controller
         // Save each item in the cart to the orders table
         foreach ($cart as $item) {
             Order::create([
-                'pizza_id' => $item['pizza'],
+                'pizza_id' => $item['pizzaId'],
                 'quantity' => $item['quantity'],
                 'delivery_address' => $address,
             ]);

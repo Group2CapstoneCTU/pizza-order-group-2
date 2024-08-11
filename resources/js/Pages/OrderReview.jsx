@@ -20,6 +20,14 @@ const OrderReview = ({ initialCart, initialAddress }) => {
         setCart(updatedCart);
     };
 
+
+    const calculateTotal = (cart, taxRate = 0.08, discount = 0) => {
+        const subtotal = cart.reduce((acc, item) => acc + item.quantity * item.price, 0);
+        const tax = subtotal * taxRate;
+        const total = subtotal + tax - discount;
+        return total.toFixed(2);
+    };
+
     const confirmOrder = () => {
         router.post('/order/confirm', { cart, address }, {
             onSuccess: () => {
@@ -37,7 +45,7 @@ const OrderReview = ({ initialCart, initialAddress }) => {
             <ul>
                 {cart.map((item, index) => (
                     <li key={index}>
-                        Pizza ID: {item.pizza}, 
+                        Pizza: {item.pizzaName}, 
                         Quantity: 
                         <input
                             type="number"
@@ -49,6 +57,10 @@ const OrderReview = ({ initialCart, initialAddress }) => {
                     </li>
                 ))}
             </ul>
+
+        <h3>Subtotal: ${calculateTotal(cart)}</h3>
+        <h3>Tax: ${(calculateTotal(cart) * 0.08).toFixed(2)}</h3>
+        <h3>Total: ${calculateTotal(cart)}</h3>
             <div>
                 <label htmlFor="address">Delivery Address:</label>
                 <input

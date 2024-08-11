@@ -10,12 +10,19 @@ const OrderPage = () => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const pizzaId = formData.get('pizza_id');
+        const pizzaName = event.target.querySelector(`option[value="${pizzaId}"]`).textContent;
         const quantity = parseInt(formData.get('quantity'));
 
-        const newItem = { pizza: pizzaId, quantity: quantity };
+        const newItem = { pizzaId: pizzaId, pizzaName: pizzaName, quantity: quantity };
         setCart([...cart, newItem]);
     };
 
+    const removeFromCart = (index) => {
+        const updatedCart = cart.filter((_, i) => i !== index);
+        setCart(updatedCart);
+    };
+    
+    
     const placeOrder = () => {
         router.post('/order', { cart, address }, {
             onSuccess: () => {
@@ -28,44 +35,72 @@ const OrderPage = () => {
     };
 
     return (
-        <div>
-            <h2>Order Your Pizza</h2>
-            <form onSubmit={addToCart}>
-                <div>
-                    <label htmlFor="pizza">Choose your pizza:</label>
-                    <select id="pizza_id" name="pizza_id">
-                        <option value="1">Margherita</option>
-                        <option value="2">Pepperoni</option>
-                        <option value="3">BBQ Chicken</option>
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" defaultValue="1" />
-                </div>
-                <div>
-                    <label htmlFor="address">Delivery Address:</label>
-                    <input
-                        type="text"
-                        id="address"
-                        name="address"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                    />
-                </div>
-                <button type="submit">Add to Cart</button>
-            </form>
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+            <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+                <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Order Your Pizza</h2>
+                <form onSubmit={addToCart}>
+                    <div className="mb-4">
+                        <label htmlFor="pizza" className="block text-gray-700 font-medium mb-2">Choose your pizza:</label>
+                        <select id="pizza_id" name="pizza_id" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <option value="1">Margherita</option>
+                            <option value="2">Pepperoni</option>
+                            <option value="3">BBQ Chicken</option>
+                        </select>
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="quantity" className="block text-gray-700 font-medium mb-2">Quantity:</label>
+                        <input
+                            type="number"
+                            id="quantity"
+                            name="quantity"
+                            min="1"
+                            defaultValue="1"
+                            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div className="mb-6">
+                        <label htmlFor="address" className="block text-gray-700 font-medium mb-2">Delivery Address:</label>
+                        <input
+                            type="text"
+                            id="address"
+                            name="address"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div className="flex justify-between">
+                        <button
+                            type="submit"
+                            className="w-full mr-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                </form>
 
-            <div>
-                <h3>Cart</h3>
-                <ul>
-                    {cart.map((item, index) => (
-                        <li key={index}>
-                            Pizza ID: {item.pizza}, Quantity: {item.quantity}
-                        </li>
-                    ))}
-                </ul>
-                <button onClick={placeOrder}>Place Order</button>
+                <div className="mt-8">
+                    <h3 className="text-xl font-bold text-gray-800 mb-4">Cart</h3>
+                    <ul className="mb-4">
+                        {cart.map((item, index) => (
+                            <li key={index} className="flex justify-between items-center bg-gray-100 p-2 rounded-md mb-2">
+                                <span>Pizza: {item.pizzaName}, Quantity: {item.quantity}</span>
+                                <button
+                                    onClick={() => removeFromCart(index)}
+                                    className="ml-4 bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                                >
+                                    Remove
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                    <button
+                        onClick={placeOrder}
+                        className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                    >
+                        Place Order
+                    </button>
+                </div>
             </div>
         </div>
     );
