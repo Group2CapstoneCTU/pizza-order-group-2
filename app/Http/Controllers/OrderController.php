@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Pizza;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -72,27 +73,40 @@ class OrderController extends Controller
     {
         $cart = $request->input('cart');
         $address = $request->input('address');
-        
+
         $orders = [];
         $taxRate = 0.08;
-        
+
         foreach ($cart as $item) {
             $pizza = Pizza::find($item['pizzaId']);
             $subtotal = $pizza->price * $item['quantity'];
             $tax = $subtotal * $taxRate;
             $total = $subtotal + $tax;
-        
+
             $orders[] = [
                 'pizza_id' => $item['pizzaId'],
                 'quantity' => $item['quantity'],
                 'delivery_address' => $address,
                 'price' => $subtotal,
-                'total' => $total,                
+                'total' => $total,
             ];
         }
-        
+
         Order::insert($orders);
-    
+        // Send email using the email address provided in the form
+        $email = $request->input('email');
+        // Check if the email address is valid
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            // Send email using the provided email address
+            Mail::raw('Your order has been placed successfully!', function ($message) use ($email) {
+                $message->to($email)
+                    ->subject('Order Confirmation');
+            });
+
+        } else {
+            // Handle invalid email address scenario
+            return response()->json(['error' => 'Invalid email address'], 400);
+        }
         session()->flash('message', 'Order placed successfully!');
         return redirect()->route('order.confirmed');
     }

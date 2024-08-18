@@ -10,7 +10,7 @@ const HomePage = () => {
         <div
             className="relative bg-cover bg-center h-screen text-black dark:bg-black dark:text-yellow-50"
             style={{
-                backgroundImage: "url('https://cdn.pixabay.com/photo/2024/04/18/10/41/ai-generated-8704064_1280.jpg')",
+                backgroundImage: "url('https://designerapp.officeapps.live.com/designerapp/document.ashx?path=/39b332f9-59bc-41ac-8dc4-14327ebe24da/DallEGeneratedImages/dalle-837bf81e-f909-48dc-b2c1-3d87ea4f89460251678356898795744000.jpg&dcHint=WestUS&fileToken=cab7a7d6-00ce-40cb-8ca7-738120deb63e')",
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
             }}
@@ -31,8 +31,8 @@ const HomePage = () => {
 
             {/* Content */}
             <header className="relative z-10 text-yellow-50 py-20 text-center h-5/6">
-                <div className="container mx-auto my-48">
-                    <h1 className="text-4xl font-bold mb-4">Delicious Italian Cuisine</h1>
+                <div className="container mx-auto my-52">
+                    <h1 className="text-4xl font-bold">Delicious Italian Cuisine</h1>
                     <p className="text-lg mb-8">
                         Enjoy the most delicious pizza made with the finest ingredients
                     </p>
