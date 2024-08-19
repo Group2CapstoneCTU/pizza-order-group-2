@@ -4,7 +4,7 @@ import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 import '/resources/css/modal.css'; // Adjust the path based on your project structure
 
-const OrderPage = () => {
+const OrderPage = ({ pizzas }) => {
     const [cart, setCart] = useState([]);
     const [address, setAddress] = useState('');
 
@@ -45,9 +45,11 @@ const OrderPage = () => {
                     <div className="mb-4">
                         <label htmlFor="pizza" className="block text-gray-700 font-medium mb-2">Choose your pizza:</label>
                         <select id="pizza_id" name="pizza_id" className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
-                            <option value="1">Margherita</option>
-                            <option value="2">Pepperoni</option>
-                            <option value="3">BBQ Chicken</option>
+                            {pizzas.map(pizza => (
+                                <option key={pizza.id} value={pizza.id}>
+                                    {pizza.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="mb-4">

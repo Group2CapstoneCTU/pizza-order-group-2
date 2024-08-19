@@ -10,6 +10,9 @@ use App\Http\Controllers\OrderController;
 Route::get('/', function () {
     return Inertia::render('HomePage');
 });
+Route::get('/', [PizzaController::class, 'index'])->name('home');
+Route::post('/pizzas', [PizzaController::class, 'store'])->name('pizzas.store');
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -23,9 +26,8 @@ Route::middleware('auth')->group(function () {
 
 // Menu and Order routes
 Route::get('/menu', [PizzaController::class, 'index']);
-Route::get('/order', function () {
-    return Inertia::render('OrderPage');
-});
+Route::get('/order', [OrderController::class, 'showOrderPage'])->name('order.page');
+
 Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 Route::get('/order/review', function () {
     // You might want to pass the cart and address from session or state
@@ -35,6 +37,10 @@ Route::get('/order/review', function () {
     ]);
 })->name('order.review');
 
+Route::get('/add-pizza', function () {
+    return Inertia::render('AddPizzaForm'); // Ensure the component name matches
+})->name('addPizza');
+
 Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 Route::get('/order/review', [OrderController::class, 'review'])->name('order.review');
 Route::post('/order/confirm', [OrderController::class, 'confirm']);
@@ -43,6 +49,5 @@ Route::get('/order/confirmed', function () {
         'message' => session('message', 'Your order has been placed successfully!'),
     ]);
 })->name('order.confirmed');
-
 
 require __DIR__.'/auth.php';

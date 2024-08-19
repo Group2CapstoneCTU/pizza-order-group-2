@@ -21,6 +21,7 @@ class OrderController extends Controller
 
         return redirect()->route('order.review');
     }
+    
 
     public function review()
     {
@@ -69,6 +70,17 @@ class OrderController extends Controller
         }
     }
 
+    public function showOrderPage()
+{
+    // Fetch pizzas from the database
+    $pizzas = Pizza::all();
+
+    // Pass pizzas to the Inertia view
+    return Inertia::render('OrderPage', [
+        'pizzas' => $pizzas
+    ]);
+}
+
     public function confirm(Request $request)
     {
         $cart = $request->input('cart');
@@ -90,7 +102,10 @@ class OrderController extends Controller
                 'price' => $subtotal,
                 'total' => $total,
             ];
+            
         }
+
+        
 
         Order::insert($orders);
         // Send email using the email address provided in the form

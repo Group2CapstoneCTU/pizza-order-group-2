@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from '@inertiajs/react';
+
 
 const Navbar = () => {
   return (
@@ -10,6 +12,7 @@ const Navbar = () => {
           <li><a href="#" className="hover:underline">Menu</a></li>
           <li><a href="#" className="hover:underline">About Us</a></li>
           <li><a href="#" className="hover:underline">Contact</a></li>
+          <Link href="/add-pizza" className="text-white text-lg font-semibold">Add Pizza</Link> {/* Add this line */}
         </ul>
       </div>
     </nav>

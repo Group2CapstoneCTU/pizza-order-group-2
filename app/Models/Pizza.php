@@ -13,6 +13,7 @@ class Pizza extends Model
         'name',
         'description',
         'price',
+        'image_url',
     ];
 
     public function orders()
