@@ -25,19 +25,25 @@
        }
 
        public function store(Request $request)
-       {
-           $request->validate([
-               'name' => 'required|string|max:255',
-               'price' => 'required|numeric',
-               'image_url' => 'required|url'
-           ]);
-   
-           Pizza::create($request->all());
-   
-           return redirect()->route('home')->with('success', 'Pizza added successfully!');
-       }
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric',
+        'image_url' => 'required|url',
+        'description' => 'nullable|string',
+        'managerCode' => 'required|string'
+    ]);
 
-       
+    // Check if the manager code matches
+    if ($request->managerCode !== env('MANAGER_CODE')) {
+        return back()->withErrors(['managerCode' => 'Invalid Manager Code.']);
     }
+
+    // Proceed with storing the pizza if validation passes
+    Pizza::create($request->only('name', 'price', 'image_url', 'description'));
+
+    return redirect()->route('pizzas.index')->with('success', 'Pizza added successfully.');
+}
+   }
 
      

@@ -12,6 +12,8 @@ Route::get('/', function () {
 });
 Route::get('/', [PizzaController::class, 'index'])->name('home');
 Route::post('/pizzas', [PizzaController::class, 'store'])->name('pizzas.store');
+Route::get('/pizzas', [PizzaController::class, 'index'])->name('pizzas.index');
+
 
 
 Route::get('/dashboard', function () {
