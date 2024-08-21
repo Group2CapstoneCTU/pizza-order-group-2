@@ -39,7 +39,7 @@ class PizzaController extends Controller
     }
 
 
-
+//Needs to be fixed
     public function destroy(Request $request, $id)
     {
         // Validate the manager code
@@ -48,13 +48,13 @@ class PizzaController extends Controller
         // ]);
 
         // Retrieve the manager code from the request
-        // $value = $request->input('managerCode');
+         $value = $request->input('managerCode');
 
         // Validate the manager code
-        // if ($value !== env('MANAGER_CODE', 'manager')) {
+         if ($value !== env('MANAGER_CODE', 'manager')) {
         // Redirect back with an error message if the manager code is invalid
         // return redirect()->back()->with('error', 'Invalid Manager Code.');
-        // }
+         }
 
         $pizza = Pizza::findOrFail($id);
         $pizza->delete();
