@@ -42,46 +42,46 @@ class PizzaController extends Controller
 
     public function destroy(Request $request, $id)
     {
-      // Validate the manager code
-    // $request->validate([
+        // Validate the manager code
+        // $request->validate([
         // 'managerCode' => 'required|in:' . env('MANAGER_CODE'),
-    // ]);
-    
+        // ]);
+
+        // Retrieve the manager code from the request
+        // $value = $request->input('managerCode');
+
+        // Validate the manager code
+        // if ($value !== env('MANAGER_CODE', 'manager')) {
+        // Redirect back with an error message if the manager code is invalid
+        // return redirect()->back()->with('error', 'Invalid Manager Code.');
+        // }
+
         $pizza = Pizza::findOrFail($id);
         $pizza->delete();
-    
+
         return redirect()->back()->with('success', 'Pizza deleted successfully.');
     }
 
 
 
-
-    // Method to store a new pizza in the database
     public function store(Request $request)
     {
-        // Validate the incoming request data
-        $request->validate([
-            'name' => 'required|string|max:255',        // Name is required, must be a string, max length 255
-            'price' => 'required|numeric',              // Price is required and must be numeric
-            'image_url' => 'required|url',              // Image URL is required and must be a valid URL
-            'description' => 'nullable|string',         // Description is optional, but if present, must be a string
-            // 'managerCode' => 'required|string'          // Manager code is required and must be a string
+        // Validation rules
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'image_url' => 'required|url',
+            'description' => 'nullable|string',
+            'managerCode' => ['required', 'string', function ($attribute, $value, $fail) {
+                if ($value !== env('MANAGER_CODE', 'manager')) {
+                    $fail('Invalid Manager Code.');
+                }
+            }],
         ]);
 
+        // If validation passes, the code will continue to this point
+        Pizza::create($validatedData);
 
-
-        // Check if the manager code matches the one set in the environment variables
-        // if ($request->managerCode !== env('MANAGER_CODE')) {
-            // return back()->withErrors(['managerCode' => 'Invalid Manager Code.']); // Return with error if the code is invalid
-        // }
-
-
-        // Proceed with storing the pizza if validation passes
-        Pizza::create($request->only('name', 'price', 'image_url', 'description')); // Create the pizza using the validated data
-
-
-
-        // Redirect to the pizzas index page with a success message
         return redirect()->route('pizzas.index')->with('success', 'Pizza added successfully.');
     }
 }
