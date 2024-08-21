@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer'; // Adjust the path as necessary
+import ScrollToTop from '../Components/ScrollToTop';
 import AddPizzaForm from '../Components/AddPizzaForm'; // Import the AddPizzaForm component
 import '/resources/css/HomePage.css';
 
@@ -81,7 +82,7 @@ const HomePage = ({ pizzas }) => {
             </section>
     
             {/* Pizza List Section */}
-            <section className="py-24 bg-black text-white">
+            <section id="menu" className="py-24 bg-black text-white">
                 <div className="container mx-auto px-8">
                     <h2 className="text-4xl font-bold text-center mb-12 text-white" style={{ fontFamily: "'Playfair Display', serif" }}>Our Pizza Selection</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -103,12 +104,13 @@ const HomePage = ({ pizzas }) => {
             </section>
     
             {/* About Us Section */}
-            <section className="py-16 bg-yellow-100">
+            <section id="about" className="py-16 bg-yellow-100">
                 <div className="container mx-auto px-8 text-center">
                     <h2 className="text-4xl font-bold mb-8 text-black" style={{ fontFamily: "'Playfair Display', serif" }}>About Pizza Palace</h2>
                     <p className="text-xl text-gray-700" style={{ fontFamily: "'Open Sans', sans-serif" }}>At Pizza Palace, we are passionate about delivering the best pizza experience. Our pizzas are made with love, using the finest ingredients, ensuring every bite is a celebration of flavor.</p>
                 </div>
             </section>
+            <ScrollToTop />
     
             {/* Footer */}
             <Footer />

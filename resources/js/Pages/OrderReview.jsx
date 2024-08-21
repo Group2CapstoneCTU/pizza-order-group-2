@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { router } from '@inertiajs/react';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import { router } from '@inertiajs/react'; // Inertia router for handling requests and navigation
+import { loadStripe } from '@stripe/stripe-js'; // Function to load the Stripe library
+import { Elements, useStripe, useElements, CardElement } from '@stripe/react-stripe-js'; // Stripe components and hooks
 
 const OrderReview = ({ initialCart, initialAddress }) => {
+    // State hooks for cart, address, and email
     const [cart, setCart] = useState(initialCart);
     const [address, setAddress] = useState(initialAddress);
     const [email, setEmail] = useState('');
 
+    // Function to update the quantity of an item in the cart
     const updateQuantity = (index, newQuantity) => {
         const updatedCart = cart.map((item, i) => {
             if (i === index) {
@@ -18,19 +20,23 @@ const OrderReview = ({ initialCart, initialAddress }) => {
         setCart(updatedCart);
     };
 
+    // Function to remove an item from the cart
     const removeFromCart = (index) => {
         const updatedCart = cart.filter((_, i) => i !== index);
         setCart(updatedCart);
     };
 
+    // Function to calculate the subtotal of the cart
     const calculateSubtotal = (cart) => {
         return cart.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2);
     };
 
+    // Function to calculate the tax amount based on subtotal
     const calculateTax = (subtotal, taxRate = 0.08) => {
         return (subtotal * taxRate).toFixed(2);
     };
 
+    // Function to calculate the total amount after tax and discount
     const calculateTotal = (subtotal, tax, discount = 0) => {
         return (parseFloat(subtotal) + parseFloat(tax) - discount).toFixed(2);
     };
@@ -39,14 +45,15 @@ const OrderReview = ({ initialCart, initialAddress }) => {
     const tax = calculateTax(subtotal);
     const total = calculateTotal(subtotal, tax);
 
+    // Function to handle order confirmation and payment
     const confirmOrder = async (paymentMethodId) => {
         try {
             await router.post('/order/confirm', { cart, address, paymentMethodId, email }, {
                 onSuccess: () => {
-                    router.visit('/order/confirmed');
+                    router.visit('/order/confirmed'); // Redirect to order confirmation page on success
                 },
                 onError: (errors) => {
-                    console.error(errors);
+                    console.error(errors); // Log errors if the request fails
                 }
             });
         } catch (error) {
@@ -54,6 +61,7 @@ const OrderReview = ({ initialCart, initialAddress }) => {
         }
     };
 
+    // Load Stripe instance with your publishable key
     const stripePromise = loadStripe('pk_test_51Pmf8kRpUe0LHuzU3J3Y0AGwCAuhw3ivc0S7SrdDZxvBKcSOBrVQDVpo9U0agvgW58GBLIAleDRMjBGB5XEfDK3n00XpP80kR9');
 
     return (
@@ -123,6 +131,7 @@ const OrderReview = ({ initialCart, initialAddress }) => {
     );
 };
 
+// Component for handling Stripe payment
 const CheckoutForm = ({ confirmOrder }) => {
     const stripe = useStripe();
     const elements = useElements();
@@ -144,7 +153,7 @@ const CheckoutForm = ({ confirmOrder }) => {
         if (error) {
             console.error(error);
         } else {
-            confirmOrder(paymentMethod.id);
+            confirmOrder(paymentMethod.id); // Call confirmOrder with the payment method ID
         }
     };
 

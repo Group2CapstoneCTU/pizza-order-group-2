@@ -1,36 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { router } from '@inertiajs/react';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
+import React, { useState } from 'react';
+import { router } from '@inertiajs/react'; // Inertia router for handling requests and navigation
+import Navbar from '../Components/Navbar'; // Import the Navbar component
+import Footer from '../Components/Footer'; // Import the Footer component
 import '/resources/css/modal.css'; // Adjust the path based on your project structure
 
 const OrderPage = ({ pizzas }) => {
+    // State hooks for cart and address
     const [cart, setCart] = useState([]);
     const [address, setAddress] = useState('');
 
+    // Function to add a pizza to the cart
     const addToCart = (event) => {
-        event.preventDefault();
+        event.preventDefault(); // Prevent default form submission behavior
         const formData = new FormData(event.target);
         const pizzaId = formData.get('pizza_id');
         const pizzaName = event.target.querySelector(`option[value="${pizzaId}"]`).textContent;
         const quantity = parseInt(formData.get('quantity'));
 
+        // Create a new cart item and update the cart state
         const newItem = { pizzaId: pizzaId, pizzaName: pizzaName, quantity: quantity };
         setCart([...cart, newItem]);
     };
 
+    // Function to remove an item from the cart
     const removeFromCart = (index) => {
         const updatedCart = cart.filter((_, i) => i !== index);
         setCart(updatedCart);
     };
 
+    // Function to place the order and navigate to the review page
     const placeOrder = () => {
         router.post('/order', { cart, address }, {
             onSuccess: () => {
-                router.visit('/order/review');
+                router.visit('/order/review'); // Redirect to the review page on success
             },
             onError: (errors) => {
-                console.error(errors);
+                console.error(errors); // Log errors if the request fails
             }
         });
     };
